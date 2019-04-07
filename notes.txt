@@ -1,0 +1,4 @@
+VBoxManage showvminfo 0584ab71-ec77-44e7-8a96-74f2a697deaa
+VBoxManage controlvm 0584ab71-ec77-44e7-8a96-74f2a697deaa usbattach d5867298-d7f2-4d6c-b5d1-b693bff2b3a8
+VBoxManage list usbhost
+VBoxManage list vms
