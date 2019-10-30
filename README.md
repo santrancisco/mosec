@@ -4,6 +4,12 @@ Vagrant build for testing mobile apps. Some notes are for myself but maybe usefu
 
 ## Usage
 
+Make sure you have the lastest vagrant, virtualbox and virtual box extension pack. To install the extension pack after downloading it:
+
+```
+VBoxManage extpack install --replace /Users/santran/Downloads/Oracle_VM_VirtualBox_Extension_Pack-6.0.14.vbox-extpack
+```
+
 Start the VM using the following 
 
 ```
@@ -11,10 +17,12 @@ cd mosec
 vagrant up
 ```
 
-SSH to the VM using the following
+SSH to the VM using the following and start adb under root to make sure it has sufficient permission otherwise you will run into `????????????    no permissions` issue
 
 ```
 vagrant ssh
+sudo adb start-server
+adb devices
 ```
 
 Tools can be found in the following location

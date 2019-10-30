@@ -1,5 +1,5 @@
 Vagrant::Config.run do |config|
-  config.vm.box = "ubuntu/xenial64"
+  config.vm.box = "ubuntu/bionic64"
   config.vm.network :private_network, ip: "192.168.33.23"
   config.vm.customize ["modifyvm", :id, "--memory", 4096]
   config.vm.customize ["modifyvm", :id, "--usb", "on"] # for adb
@@ -13,7 +13,6 @@ Vagrant::Config.run do |config|
   #better_usbfilter_add(config.vm, '0x0bda','0x8178','TPLINK')
   #better_usbfilter_add(config.vm, '0x148f','0x2770','RALINK2')
 
-  config.vm.share_folder "v-root", "/home/vagrant/shared", ".", :nfs => false
   config.vm.provision :shell, :path => "setup.sh", :env => {"MYVAR" => "value"}
   #config.vm.linked_clone => true
 end

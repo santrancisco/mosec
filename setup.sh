@@ -6,7 +6,12 @@ HOMEDIR=/home/vagrant
 sudo update-locale LANG=en_US.UTF-8 LANGUAGE=en.UTF-8
 sudo add-apt-repository ppa:cwchien/gradle -y
 
-sudo apt-get -y update
+# A special session for F*&*#&$*& Java 
+
+# And the rest of the packages
+sudo apt-get update
+
+sudo apt-get -y install default-jdk
 sudo apt-get install -y linux-headers-$(uname -r) build-essential dkms
 sudo apt-get -y install silversearcher-ag 
 sudo apt-get -y install git
@@ -14,7 +19,6 @@ sudo apt-get -y install vim
 sudo apt-get -y install python-pip
 sudo apt-get -y install gdb gdb-multiarch
 sudo apt-get -y install virtualenv
-sudo apt-get -y install openjdk-8-jdk  
 sudo apt-get -y install android-tools-adb android-tools-fastboot
 sudo apt-get -y install wget unzip
 sudo apt-get -y install gradle
@@ -66,6 +70,14 @@ cd $HOMEDIR/tool/android/qark
 pip install -r requirements.txt
 pip install .
 
+
+## just wrapping apktool to make it friendly
+wget https://raw.githubusercontent.com/iBotPeaches/Apktool/master/scripts/linux/apktool -O /usr/bin/apktool
+wget https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_2.4.0.jar -O /usr/bin/apktool.jar
+chmod +x /usr/bin/apktool
+chmod +x /usr/bin/apktool.jar
+
+
 chown -R vagrant:vagrant $HOMEDIR/tools
 chown -R vagrant:vagrant $HOMEDIR/tools
 
@@ -102,6 +114,16 @@ adb shell settings put global http_proxy <address>:<port>'
 alias cgrep='/bin/grep --color=always'
 alias cag='/usr/bin/ag --color'
 alias cless='/usr/bin/less -r'
+function adbs() {
+    adb shell "su -c '$@'"
+}
+
+function adbp() {
+        adbs ls /data/app/ | grep $1 | xargs -I {} bash -c 'adb pull "/data/app/{}/base.apk"; mv base.apk $(echo {}|cut -d "-" -f 1).apk; apktool d $(echo {}|cut -d "-" -f 1).apk'
+}
+
+echo "adbs <command> will execute single command under su privilege over adb. You will need to grant su permission to shell."
+echo "adbp <appname> will try to pull application apk, use apktool to uncompress it."
 EOF
 
 echo "$VAR" >> /home/vagrant/.bashrc
